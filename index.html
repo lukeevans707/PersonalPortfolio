@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Luke's Portfolio Wireframe</title>
+<style>
+  :root {
+    --bg: #ffffff; --fg: #1a1a1a; --muted: #666; --line: #bbb; --box: #f2f2f2; --pin: #1a1a1a; --pin-fg: #fff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { color-scheme: dark; --bg: #161616; --fg: #e8e8e8; --muted: #999; --line: #444; --box: #222; --pin: #e8e8e8; --pin-fg: #161616; }
+  }
+  :root[data-theme="dark"] { color-scheme: dark; --bg: #161616; --fg: #e8e8e8; --muted: #999; --line: #444; --box: #222; --pin: #e8e8e8; --pin-fg: #161616; }
+
+  body { background: var(--bg); color: var(--fg); font-family: system-ui, sans-serif; line-height: 1.5; padding: 16px; }
+  main { max-width: 900px; margin: 0 auto; display: grid; gap: 24px; }
+  a { color: inherit; }
+  .note { font-size: 12px; color: var(--muted); border: 1px dashed var(--line); padding: 4px 8px; }
+  section { border: 1px solid var(--line); padding: 12px; display: grid; gap: 12px; }
+  h1, h2, h3 { margin: 0; }
+  .items { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+  .item { border: 1px solid var(--line); padding: 10px; display: grid; gap: 6px; align-content: start; }
+  .tag { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+  .actions { display: flex; flex-wrap: wrap; gap: 6px; }
+  .btn { border: 1px solid var(--fg); padding: 2px 8px; font-size: 13px; text-decoration: none; background: none; color: var(--fg); cursor: pointer; }
+  .btn:focus-visible, .pin:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+
+  /* Automation image + hotspots */
+  .diagram-scroll { overflow-x: auto; }
+  .tip.tip-up { top: auto; bottom: 30px; }
+  .diagram { position: relative; min-width: 760px; border: 1px solid var(--line); }
+  .diagram .pin { background: #ffffff; color: #111111; box-shadow: 0 0 0 2px #111111; font-weight: 700; }
+  .diagram img { display: block; width: 100%; max-width: none; height: auto; }
+  .tip.tip-right { left: auto; right: -8px; transform: none; }
+  .tip.tip-left { left: -8px; transform: none; }
+  code { border: 1px solid var(--line); padding: 2px 6px; font-size: 13px; }
+  ul { margin: 0; padding-left: 20px; }
+  .pin { position: absolute; transform: translate(-50%, -50%); width: 24px; height: 24px; border-radius: 50%; border: none; background: var(--pin); color: var(--pin-fg); font-size: 12px; cursor: pointer; }
+  .tip { position: absolute; left: 50%; top: 30px; transform: translateX(-50%); width: 220px; max-width: 70vw; background: var(--bg); color: var(--fg); border: 1px solid var(--fg); padding: 8px; font-size: 13px; text-align: left; z-index: 2; }
+  .pin:not(:hover):not(:focus):not(.open) .tip { display: none; }
+  ol { margin: 0; padding-left: 20px; }
+
+  /* Folder tabs */
+  .folder { display: grid; }
+  .tabs { display: flex; gap: 4px; padding-left: 8px; overflow-x: auto; }
+  .tab { border: 1px solid var(--line); border-bottom: none; background: var(--box); padding: 6px 14px; text-decoration: none; color: var(--muted); position: relative; top: 1px; white-space: nowrap; }
+  .tab[aria-current="page"] { background: var(--bg); color: var(--fg); z-index: 1; }
+  .tab:focus-visible { outline: 2px solid var(--fg); outline-offset: -2px; }
+  .panel { border: 1px solid var(--line); padding: 16px; display: grid; gap: 16px; background: var(--bg); }
+  .panel > section { border: none; padding: 0; }
+</style>
+</head>
+<body>
+<main id="app"></main>
+
+<script>
+/* ---------- CONTENT (edit here) ---------- */
+const PROJECTS = {
+  organization: [
+    { id: "furniture", name: "Inventory Manager", kind: "Excel (macro-enabled)", desc: "Placeholder description.",
+      actions: [{ label: "Download .xlsm", href: "https://github.com/lukeevans707/PersonalPortfolio/releases/download/v1.0/Inventory.Manager.xlsm" }] },
+    { id: "overload", name: "Progressive Overload", kind: "Notion template", desc: "Placeholder description.",
+      actions: [{ label: "Duplicate template", href: "https://zigzag-savory-0eb.notion.site/Progressive-Overload-Template-38611ac94c6c82fb9db601a3ae674498?source=copy_link" }] },
+    { id: "nutrition", name: "Nutrition Map", kind: "Sheet (view only)", desc: "Placeholder description. Basic example copy.",
+      actions: [{ label: "View sheet", href: "https://docs.google.com/spreadsheets/d/1KZ1J6JTBFvV-rMyHjjwVFBfpRb4maiCR27vtsG-JpKI/edit?gid=1995576994#gid=1995576994" }] },
+    { id: "byu", name: "College Dashboard", kind: "Notion template", desc: "Placeholder description.",
+      actions: [{ label: "Duplicate template", href: "https://zigzag-savory-0eb.notion.site/College-Dashboard-b5e11ac94c6c836dbbc201a0300f73b0?source=copy_link" }] },
+    { id: "telamon-pm", name: "Project Manager", kind: "Notion template", desc: "Placeholder description.",
+      actions: [{ label: "Duplicate template", href: "https://zigzag-savory-0eb.notion.site/Project-Dashboard-Template-c4311ac94c6c8240bd5f01501ba6522f?source=copy_link" }] }
+  ],
+  automations: [
+    { id: "assignments", name: "Assignment Engine", kind: "n8n · AI agent · Playwright",
+      desc: "Rodney, an AI agent that pulls every assignment from Canvas and Learning Suite into one prioritized Notion dashboard. Saves about an hour a week.",
+      image: "img/assignment-engine.jpg",
+      intro: [
+        "BYU houses its classes in two programs: Learning Suite and Canvas. That's inconvenient for a few reasons:"
+      ],
+      problems: [
+        "Multiple places to check due dates",
+        "Assignments are buried among other course material",
+        "Hard to see which assignments to prioritize"
+      ],
+      outro: [
+        "My solution was an AI agent, Rodney, that scrapes all my assignments from both systems into a single Notion dashboard. It runs from a button on the dashboard, gets through multi-factor authentication with Playwright browser scripts, searches each class for its assignments and syllabus, and writes the results back to the same dashboard.",
+        "Now every assignment lives in one place, prioritized by Rodney. It saves me about an hour a week."
+      ],
+      hotspots: [
+        { x: 10.3, y: 30, title: "Start from Notion", text: "Launched from a button on my Notion dashboard, which submits the form that starts the workflow." },
+        { x: 16.6, y: 30, title: "Route the job", text: "Sends assignment scraping down the top path and lecture notes down the bottom path." },
+        { x: 26.6, y: 12, title: "Scraped course data", text: "Playwright scripts log into Canvas and Learning Suite, pass multi-factor auth, and hand the scraped text to n8n." },
+        { x: 36.1, y: 12, title: "Course Scraper agent", text: "Reads the scraped text and pulls out each course in a structured format." },
+        { x: 47.2, y: 12, title: "Syllabus extractor agent", text: "Matches each course to its class in my Notion database and finds the syllabus." },
+        { x: 55.1, y: 12, title: "Download syllabus", text: "Fetches the syllabus file and extracts its text from the PDF." },
+        { x: 75.7, y: 12, title: "Assignment Organizer agent", text: "Combines assignments and syllabus details, then sorts and prioritizes them." },
+        { x: 89.4, y: 12, title: "Write to dashboard", text: "Each assignment becomes its own page in the Notion assignments database." },
+        { x: 36.1, y: 50, title: "Lecture Note Summarizer", text: "Second path: summarizes an uploaded lecture PDF." },
+        { x: 64.6, y: 50, title: "Save notes to Notion", text: "Creates a notes page under the matching class and appends the summary." }
+      ] },
+    { id: "marketplace", name: "Marketplace Scraper", kind: "n8n · AI agents · Apify",
+      desc: "An email-driven AI agent that searches Facebook Marketplace and replies with a pricing report, so you know if you're getting a good deal.",
+      image: "img/marketplace-scraper.jpg",
+      intro: [
+        "A friend asked me for a Facebook Marketplace scraper so he could tell whether he was getting a good deal on a purchase. Here's how I set up the agent:"
+      ],
+      steps: [
+        "I set up an email address for the bot and had an AI agent interpret emails from the user into search queries.",
+        "The workflow sends that query to an Apify web-scraping actor through its API and stores the results in a Google Sheet.",
+        "A separate agent has access to that sheet and writes a basic pricing report on the item, which is emailed back to the user."
+      ],
+      tryIt: {
+        text: "I'm still working out the kinks, so feel free to try it. I can see each run on my end and use it to reduce errors. Email an item you'd like to search to:",
+        email: "jerrythemarketplacescraper@gmail.com"
+      },
+      hotspots: [
+        { x: 7.7, y: 26, title: "Email arrives", text: "The workflow starts when someone emails the bot's inbox with an item to search." },
+        { x: 19.3, y: 26, title: "Email Interpreter agent", text: "Turns the email into a structured search query. Memory lets it keep context across messages." },
+        { x: 41.6, y: 61, title: "Shared language model", text: "One OpenAI model powers both agents." },
+        { x: 39.2, y: 26, title: "Apify scraper", text: "Sends the query to an Apify actor through its API, which scrapes matching Marketplace listings." },
+        { x: 48.1, y: 26, title: "Store listings", text: "Each listing is added as a row in a Google Sheet." },
+        { x: 72.7, y: 26, title: "Analytics Agent", text: "A second agent reviews the listings and writes a pricing report." },
+        { x: 73.7, y: 51, title: "Listings tool", text: "Gives the Analytics Agent read access to the sheet of listings." },
+        { x: 92.5, y: 26, title: "Reply with report", text: "The pricing report is emailed back to the person who asked." }
+      ] }
+  ],
+  webapps: []
+};
+
+/* ---------- RENDERING ---------- */
+const app = document.getElementById("app");
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+function actionLinks(actions) {
+  return actions.map(a =>
+    `<a class="btn" href="${esc(a.href)}" target="_blank" rel="noopener">${esc(a.label)}</a>` +
+    (a.todo ? ` <span class="note">TODO: ${esc(a.todo)}</span>` : "")
+  ).join("");
+}
+
+const TABS = [
+  { id: "organization", label: "Organization", sub: "Spreadsheets & Notion" },
+  { id: "automations", label: "Automations", sub: "n8n workflows" },
+  { id: "webapps", label: "Web Apps", sub: "Coming soon" }
+];
+
+function shell(activeTab, panelHtml) {
+  const tabs = TABS.map(t =>
+    `<a class="tab" href="#${t.id}" ${t.id === activeTab ? 'aria-current="page"' : ""}>${esc(t.label)}</a>`).join("");
+  app.innerHTML = `
+    <header>
+      <h1>Luke Evans — Portfolio</h1>
+      <p>Placeholder intro line.</p>
+    </header>
+    <div class="folder">
+      <nav class="tabs" aria-label="Sections">${tabs}</nav>
+      <div class="panel">${panelHtml}</div>
+    </div>`;
+}
+
+function sectionPage(tabId) {
+  const t = TABS.find(x => x.id === tabId);
+  const all = sections();
+  shell(tabId, `<div><h2>${esc(t.label)}</h2><p class="tag">${esc(t.sub)}</p></div>${all[tabId]}`);
+}
+
+function sections() {
+  const org = PROJECTS.organization.map(p => `
+    <div class="item">
+      <span class="tag">${esc(p.kind)}</span>
+      <h3>${esc(p.name)}</h3>
+      <p>${esc(p.desc)}</p>
+      <div class="actions">${actionLinks(p.actions)}</div>
+    </div>`).join("");
+
+  const auto = PROJECTS.automations.map(p => `
+    <div class="item">
+      <span class="tag">${esc(p.kind)}</span>
+      <h3>${esc(p.name)}</h3>
+      <p>${esc(p.desc)}</p>
+      <div class="actions">
+        <a class="btn" href="#${p.id}">View walkthrough</a>
+        ${p.json ? `<a class="btn" href="${esc(p.json)}">Download JSON</a>` : ""}
+      </div>
+    </div>`).join("");
+
+  const web = PROJECTS.webapps.length ? "" : `<p class="note">Empty state: no web apps yet.</p>`;
+
+  return {
+    organization: `<div class="items">${org}</div>`,
+    automations: `<div class="items">${auto}</div>`,
+    webapps: web
+  };
+}
+
+function automationPage(p) {
+  const pins = p.hotspots.map((h, i) => {
+    const side = (h.x > 75 ? "tip-right" : h.x < 20 ? "tip-left" : "") + (h.y > 45 ? " tip-up" : "");
+    return `
+    <button class="pin" style="left:${h.x}%; top:${h.y}%" aria-label="${i + 1}. ${esc(h.title)}">
+      ${i + 1}
+      <span class="tip ${side}" role="tooltip"><strong>${esc(h.title)}</strong><br>${esc(h.text)}</span>
+    </button>`;
+  }).join("");
+
+  const list = p.hotspots.map(h => `<li><strong>${esc(h.title)}</strong>: ${esc(h.text)}</li>`).join("");
+  const paras = arr => (arr || []).map(t => `<p>${esc(t)}</p>`).join("");
+  const bullets = arr => arr ? `<ul>${arr.map(t => `<li>${esc(t)}</li>`).join("")}</ul>` : "";
+  const numbered = arr => arr ? `<ol>${arr.map(t => `<li>${esc(t)}</li>`).join("")}</ol>` : "";
+
+  const tryIt = p.tryIt ? `
+    <section>
+      <h2>Try it</h2>
+      <p>${esc(p.tryIt.text)}</p>
+      <div class="actions">
+        <code id="try-email">${esc(p.tryIt.email)}</code>
+        <button class="btn" id="copy-email" type="button">Copy address</button>
+      </div>
+    </section>` : "";
+
+  shell("automations", `
+    <a class="btn" href="#automations" style="justify-self:start">← All automations</a>
+    <div>
+      <span class="tag">${esc(p.kind)}</span>
+      <h1>${esc(p.name)}</h1>
+      <p>${esc(p.desc)}</p>
+    </div>
+    <section>
+      <h2>Overview</h2>
+      ${paras(p.intro)}
+      ${bullets(p.problems)}
+      ${numbered(p.steps)}
+      ${paras(p.outro)}
+    </section>
+    ${tryIt}
+    <section>
+      <h2>How it works</h2>
+      <div class="diagram-scroll">
+        <div class="diagram">
+          <img src="${esc(p.image)}" alt="n8n workflow canvas for ${esc(p.name)}">
+          ${pins}
+        </div>
+      </div>
+      <p class="tag">Hover or tap a number</p>
+    </section>
+    <section>
+      <h2>Step by step</h2>
+      <ol>${list}</ol>
+    </section>`);
+
+  // Tap-to-toggle for touch
+  app.querySelectorAll(".pin").forEach(btn => btn.addEventListener("click", () => {
+    const open = btn.classList.contains("open");
+    app.querySelectorAll(".pin.open").forEach(b => b.classList.remove("open"));
+    if (!open) btn.classList.add("open");
+  }));
+
+  const copy = document.getElementById("copy-email");
+  if (copy) copy.addEventListener("click", () => {
+    const addr = p.tryIt.email;
+    const done = () => { copy.textContent = "Copied"; setTimeout(() => copy.textContent = "Copy address", 1500); };
+    const fallback = () => { const r = document.createRange(); r.selectNodeContents(document.getElementById("try-email")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); };
+    try { navigator.clipboard.writeText(addr).then(done, fallback); } catch (e) { fallback(); }
+  });
+}
+
+function route() {
+  const id = location.hash.slice(1);
+  const auto = PROJECTS.automations.find(p => p.id === id);
+  if (auto) automationPage(auto);
+  else sectionPage(TABS.some(t => t.id === id) ? id : "organization");
+  window.scrollTo(0, 0);
+}
+window.addEventListener("hashchange", route);
+route();
+</script>
+</body>
+</html>
