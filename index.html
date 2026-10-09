@@ -3,77 +3,137 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Luke's Portfolio Wireframe</title>
+<meta name="description" content="Luke Evans — Information Systems at BYU. Spreadsheets, Notion systems and n8n workflows that remove repetitive bottlenecks.">
 <style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-padding-top: 64px; }
+  body { margin: 0; -webkit-font-smoothing: antialiased; }
+  img { max-width: 100%; }
+  [hidden] { display: none !important; }
+</style>
+<title>Luke Evans | Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600&family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&family=Sofia+Sans+Semi+Condensed:wght@500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+  /* Layout: one navy masthead from the top edge down — name and GitHub, intro with facts column, then folder tabs that open onto the panel below → simple footer. Single light theme by design. */
   :root {
-    --bg: #ffffff; --fg: #1a1a1a; --muted: #666; --line: #bbb; --box: #f2f2f2; --pin: #1a1a1a; --pin-fg: #fff;
+    color-scheme: light;
+    --navy: #002E5D; --royal: #0062B8; --on-navy: #FFFFFF; --navy-deep: #00203F;
+    --on-navy-soft: rgba(255, 255, 255, .82); --on-navy-faint: rgba(255, 255, 255, .62); --navy-rule: rgba(255, 255, 255, .16); --sky: #8DBDF0;
+    --ink: #222B33; --muted: #5E6A71; --bg: #FFFFFF; --tint: #F3F5F7;
+    --line: #D8DDE1; --line-strong: #B9C1C7; --shadow: rgba(0, 46, 93, .14);
+    --tabs: "Barlow Condensed", "Open Sans", Helvetica, Arial, sans-serif;
+    --body: "Public Sans", "Noto Sans", "Open Sans", Helvetica, Arial, sans-serif;
   }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) { color-scheme: dark; --bg: #161616; --fg: #e8e8e8; --muted: #999; --line: #444; --box: #222; --pin: #e8e8e8; --pin-fg: #161616; }
-  }
-  :root[data-theme="dark"] { color-scheme: dark; --bg: #161616; --fg: #e8e8e8; --muted: #999; --line: #444; --box: #222; --pin: #e8e8e8; --pin-fg: #161616; }
+  body { background: var(--panel); color: var(--ink); font: 400 16px/1.6 var(--body); }
+  .wrap { max-width: 1120px; margin: 0 auto; padding-inline: 16px; box-sizing: border-box; }
 
-  body { background: var(--bg); color: var(--fg); font-family: system-ui, sans-serif; line-height: 1.5; padding: 16px; }
-  main { max-width: 900px; margin: 0 auto; display: grid; gap: 24px; }
-  a { color: inherit; }
-  .note { font-size: 12px; color: var(--muted); border: 1px dashed var(--line); padding: 4px 8px; }
-  section { border: 1px solid var(--line); padding: 12px; display: grid; gap: 12px; }
-  h1, h2, h3 { margin: 0; }
-  .items { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
-  .item { border: 1px solid var(--line); padding: 10px; display: grid; gap: 6px; align-content: start; }
-  .tag { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
-  .actions { display: flex; flex-wrap: wrap; gap: 6px; }
-  .btn { border: 1px solid var(--fg); padding: 2px 8px; font-size: 13px; text-decoration: none; background: none; color: var(--fg); cursor: pointer; }
-  .btn:focus-visible, .pin:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+  .masthead { background: var(--navy); color: var(--on-navy); }
+  .top .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: center; justify-content: space-between; padding-block: 20px 18px; border-bottom: 1px solid var(--navy-rule); }
+  .brand { display: grid; text-decoration: none; }
+  .brand b { font: 700 clamp(26px, 3.4vw, 32px)/1.1 var(--body); color: var(--on-navy); letter-spacing: -.01em; }
+  .brand span { font-size: 14px; color: var(--on-navy-faint); }
+  .top-link { font: 600 14px/1 var(--body); color: var(--on-navy); text-decoration: none; border: 1px solid var(--on-navy-faint); padding: 9px 14px; }
+  .top-link:hover { background: var(--on-navy); color: var(--navy); border-color: var(--on-navy); }
+  .top-link:focus-visible, .brand:focus-visible { outline: 2px solid var(--sky); outline-offset: 2px; }
 
-  /* Automation image + hotspots */
-  @media (max-width: 800px) { .diagram-scroll { overflow-x: auto; } }
-  .intro { display: grid; gap: 8px; max-width: 70ch; }
-  .intro p { margin: 0; }
-  .intro .tag + p:not(.tag) { margin-top: 8px; }
-  .preview { display: block; width: 100%; max-width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: left top; border: 1px solid var(--line); background: var(--box); }
-  div.preview { display: flex; align-items: center; overflow: hidden; color: var(--fg); padding: 6px; box-sizing: border-box; }
+  .about .wrap { padding-block: 28px 32px; display: grid; gap: 24px 40px; grid-template-columns: minmax(0, 1fr) auto; align-items: start; }
+  .about-text { display: grid; gap: 8px; max-width: 64ch; }
+  .about-text h1 { font: 600 20px/1.35 var(--body); color: var(--on-navy); }
+  .about-text p { color: var(--on-navy-soft); }
+  .facts { display: grid; gap: 12px; min-width: 220px; border-left: 3px solid var(--sky); padding: 4px 0 4px 16px; margin: 0; }
+  .facts dt { font: 600 12px/1 var(--body); text-transform: uppercase; letter-spacing: .08em; color: var(--on-navy-faint); }
+  .facts dd { margin: 4px 0 0; font: 600 16px/1.3 var(--body); color: var(--on-navy); }
+  @media (max-width: 720px) { .about .wrap { grid-template-columns: 1fr; } }
+
+  .band { background: var(--navy); position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; }
+  .tabs { display: flex; gap: 6px; padding-top: 12px; overflow-x: auto; }
+  .tab { font: 600 19px/1 var(--tabs); text-transform: uppercase; letter-spacing: .06em; color: var(--on-navy); text-decoration: none; padding: 14px 22px 12px; background: var(--royal); white-space: nowrap; }
+  .tab:hover { background: var(--navy-deep); }
+  @media (max-width: 480px) { .tabs { gap: 4px; } .tab { font-size: 16px; padding: 12px 12px 10px; letter-spacing: .04em; } }
+  .tab[aria-current="page"] { background: var(--panel); color: var(--navy); }
+  .tab:focus-visible { outline: 2px solid var(--on-navy); outline-offset: -4px; }
+
+  .page { padding-block: 32px 56px; display: grid; gap: 24px; }
+  .sec-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; }
+  .sec-head p { color: var(--muted); font-size: 15px; }
+
+  .empty { border: 1px dashed var(--line-strong); background: var(--bg); padding: 32px; display: grid; gap: 6px; }
+
+  .detail { display: grid; gap: 28px; }
+  .detail-head { display: grid; gap: 8px; }
+  .detail-head p { font-size: 17px; max-width: 64ch; }
+  .detail section { display: grid; gap: 14px; min-width: 0; }
+  .detail section > p, .detail section > ul, .detail section > ol { max-width: 68ch; }
+  .tag { font-size: 13px; color: var(--muted); }
+  .eyebrow { font: 600 12px/1.3 var(--body); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+
+  footer { background: var(--bg); border-top: 1px solid var(--line); }
+  footer .wrap { padding-block: 24px; display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; font-size: 14px; color: var(--muted); }
+  footer b { color: var(--navy); }
+
+  :root { --panel: #F3F5F7; --head: "Sofia Sans Semi Condensed", "Open Sans", Helvetica, Arial, sans-serif; }
+  .sec-head h2 { font: 700 28px/1.15 var(--head); color: var(--navy); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 24px; }
+  .card { background: var(--bg); border: 1px solid var(--line); display: grid; grid-template-rows: auto 1fr; min-width: 0; }
+  .card .preview { border-bottom: 1px solid var(--line); }
+  .card-body { padding: 18px 20px 20px; display: grid; gap: 8px; grid-template-rows: auto auto 1fr auto; }
+  .card h3 { font: 700 22px/1.2 var(--head); color: var(--navy); }
+  .card p { font-size: 15px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 8px; padding-top: 6px; }
+  .btn { display: inline-block; background: var(--royal); color: var(--on-navy); font: 600 14px/1 var(--body); padding: 10px 16px; text-decoration: none; border: 2px solid var(--royal); }
+  .btn:hover { background: var(--navy); border-color: var(--navy); }
+  .btn:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
+  .empty h3 { font: 700 22px/1.2 var(--head); color: var(--navy); }
+
+  /* Workflow walkthrough: list-draft styling on a white panel */
+  :root { --serif: "Source Serif 4", Georgia, "Times New Roman", serif; }
+  body[data-view="detail"] { --panel: #FFFFFF; }
+  .btn.back { background: none; border: none; padding: 0; color: var(--royal); font: 600 15px/1.4 var(--body); }
+  .btn.back:hover { background: none; color: var(--navy); text-decoration: underline; }
+  .detail-head { padding-bottom: 24px; border-bottom: 1px solid var(--line); }
+  .detail-head h1 { font: 400 clamp(32px, 4.6vw, 44px)/1.1 var(--serif); color: var(--navy); }
+  .detail section h2 { font: 600 26px/1.2 var(--serif); color: var(--navy); }
+  /* Shared mechanics: previews, workflow diagrams, hotspot pins, server figure */
+  .preview { display: block; width: 100%; max-width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: left top; background: var(--tint); }
+  div.preview { display: flex; align-items: center; overflow: hidden; color: var(--ink); padding: 8px; box-sizing: border-box; }
   div.preview svg { width: 100%; height: auto; display: block; }
-  figure.vps { margin: 0; display: grid; gap: 8px; color: var(--fg); }
+  .diagram-scroll { overflow-x: auto; }
+  figure.vps { margin: 0; display: grid; gap: 10px; color: var(--ink); }
   figure.vps svg { display: block; width: 100%; min-width: 720px; height: auto; }
-  .vps .box { fill: var(--bg); stroke: var(--line); stroke-width: 1.5; }
-  .vps .edge { fill: none; stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 6 5; }
+  .vps .box { fill: var(--bg); stroke: var(--line-strong); stroke-width: 1.5; }
+  .vps .edge { fill: none; stroke: var(--royal); stroke-width: 1.5; stroke-dasharray: 6 5; }
   .vps .ln { fill: none; stroke: currentColor; stroke-width: 1.5; }
   .vps .dash { stroke-dasharray: 5 4; }
-  .vps .t { fill: var(--fg); font-size: 14px; font-weight: 600; }
-  .vps .s { fill: var(--muted); font-size: 12px; }
+  .vps .t { fill: var(--navy); font-size: 14px; font-weight: 600; font-family: var(--body); }
+  .vps .s { fill: var(--muted); font-size: 12px; font-family: var(--body); }
   figure.vps figcaption { font-size: 13px; color: var(--muted); }
-  .pin:hover { z-index: 5; }
-  .tip.tip-wide { width: 300px; }
-  .diagram .tip { font-weight: 400; }
-  .diagram .tip strong { font-weight: 700; }
-  .tip-img { display: block; width: 100%; height: auto; margin-top: 8px; border: 1px solid var(--line); }
-  .tip.tip-up { top: auto; bottom: 30px; }
   .diagram { position: relative; min-width: 760px; border: 1px solid var(--line); }
-  .diagram .pin { background: #ffffff; color: #111111; box-shadow: 0 0 0 2px #111111; font-weight: 700; }
-  .pin.hover-only { cursor: default; display: flex; align-items: center; justify-content: center; }
   .diagram img { display: block; width: 100%; max-width: none; height: auto; }
+  .pin { position: absolute; transform: translate(-50%, -50%); width: 26px; height: 26px; border-radius: 50%; border: none; background: var(--navy); color: var(--on-navy); font: 700 12px/1 var(--body); cursor: pointer; box-shadow: 0 0 0 2px var(--bg); display: flex; align-items: center; justify-content: center; }
+  .pin.hover-only { cursor: default; }
+  .pin:hover { z-index: 5; }
+  .pin:focus-visible { outline: 2px solid var(--royal); outline-offset: 2px; }
+  .tip { position: absolute; left: 50%; top: 32px; transform: translateX(-50%); width: 230px; max-width: 70vw; background: var(--bg); color: var(--ink); border: 1px solid var(--line-strong); border-top: 3px solid var(--royal); padding: 10px 12px; font: 400 13px/1.45 var(--body); text-align: left; z-index: 2; box-shadow: 0 8px 20px var(--shadow); }
+  .tip strong { color: var(--navy); font-weight: 600; }
+  .pin:not(:hover):not(:focus):not(.open) .tip { display: none; }
+  .tip.tip-wide { width: 300px; }
+  .tip.tip-up { top: auto; bottom: 32px; }
   .tip.tip-right { left: auto; right: -8px; transform: none; }
   .tip.tip-left { left: -8px; transform: none; }
-  code { border: 1px solid var(--line); padding: 2px 6px; font-size: 13px; }
-  ul { margin: 0; padding-left: 20px; }
-  .pin { position: absolute; transform: translate(-50%, -50%); width: 24px; height: 24px; border-radius: 50%; border: none; background: var(--pin); color: var(--pin-fg); font-size: 12px; cursor: pointer; }
-  .tip { position: absolute; left: 50%; top: 30px; transform: translateX(-50%); width: 220px; max-width: 70vw; background: var(--bg); color: var(--fg); border: 1px solid var(--fg); padding: 8px; font-size: 13px; text-align: left; z-index: 2; }
-  .pin:not(:hover):not(:focus):not(.open) .tip { display: none; }
-  ol { margin: 0; padding-left: 20px; }
+  .tip-img { display: block; width: 100%; height: auto; margin-top: 8px; border: 1px solid var(--line); }
+  code { font: 13px ui-monospace, Menlo, monospace; border: 1px solid var(--line); padding: 2px 6px; }
+  ul, ol { margin: 0; padding-left: 20px; display: grid; gap: 4px; }
+  h1, h2, h3, h4, p { margin: 0; }
+  h1, h2, h3 { text-wrap: balance; }
+  a { color: var(--royal); }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 
-  /* Folder tabs */
-  .folder { display: grid; }
-  .tabs { display: flex; gap: 4px; padding-left: 8px; overflow-x: auto; }
-  .tab { border: 1px solid var(--line); border-bottom: none; background: var(--box); padding: 6px 14px; text-decoration: none; color: var(--muted); position: relative; top: 1px; white-space: nowrap; }
-  .tab[aria-current="page"] { background: var(--bg); color: var(--fg); z-index: 1; }
-  .tab:focus-visible { outline: 2px solid var(--fg); outline-offset: -2px; }
-  .panel { border: 1px solid var(--line); padding: 16px; display: grid; gap: 16px; background: var(--bg); }
-  .panel > section { border: none; padding: 0; }
 </style>
 </head>
 <body>
-<main id="app"></main>
+<div id="app"></div>
 
 <script>
 /* ---------- CONTENT (edit here) ---------- */
@@ -251,63 +311,65 @@ const TABS = [
   { id: "webapps", label: "Web Apps", sub: "Coming soon" }
 ];
 
-function shell(activeTab, panelHtml) {
-  const tabs = TABS.map(t =>
-    `<a class="tab" href="#${t.id}" ${t.id === activeTab ? 'aria-current="page"' : ""}>${esc(t.label)}</a>`).join("");
+/* ---------- ABOUT (shared by all drafts) ---------- */
+const ABOUT = {
+  name: "Luke Evans",
+  focus: "Business Analysis",
+  program: "Information Systems, BYU",
+  grad: "May 2028",
+  thesis: "I build systems that remove repetitive bottlenecks.",
+  body: "I'm studying Information Systems in BYU's STEM-designated program, and I'm interested in where data, process and automation meet: finding the manual steps that slow a team down and replacing them with workflows that run on their own."
+};
+const GITHUB = "https://github.com/lukeevans707";
+const EMPTY_WEB = `<div class="empty"><h3>No web apps published yet</h3><p>Web applications I build will be added here as they ship.</p></div>`;
+const disclaimer = "Personal portfolio. Not an official Brigham Young University site.";
+
+function shell(activeTab, panelHtml, opts = {}) {
+  const tabs = TABS.map(t => `<a class="tab" href="#${t.id}" ${t.id === activeTab ? 'aria-current="page"' : ""}>${esc(t.label)}</a>`).join("");
+  const about = opts.about ? `
+    <section class="about masthead" aria-label="About"><div class="wrap">
+      <div class="about-text"><h1>${esc(ABOUT.thesis)}</h1><p>${esc(ABOUT.body)}</p></div>
+      <dl class="facts">
+        <div><dt>Focus</dt><dd>${esc(ABOUT.focus)}</dd></div>
+        <div><dt>Program</dt><dd>${esc(ABOUT.program)}</dd></div>
+        <div><dt>Graduating</dt><dd>${esc(ABOUT.grad)}</dd></div>
+      </dl>
+    </div></section>` : "";
+  document.body.dataset.view = opts.about ? "section" : "detail";
   app.innerHTML = `
-    <header class="intro">
-      <h1>Luke Evans</h1>
-      <p class="tag">Business Analysis</p>
-      <p class="tag">Information Systems, BYU · Graduating May 2028</p>
-      <p>I build systems that remove repetitive bottlenecks. I'm studying Information Systems in BYU's STEM-designated program, and I'm interested in where data, process and automation meet: finding the manual steps that slow a team down and replacing them with workflows that run on their own.</p>    </header>
-    <div class="folder">
-      <nav class="tabs" aria-label="Sections">${tabs}</nav>
-      <div class="panel">${panelHtml}</div>
-    </div>`;
+    <header class="top masthead"><div class="wrap">
+      <a class="brand" href="#organization"><b>${esc(ABOUT.name)}</b><span>Information Systems · Brigham Young University</span></a>
+      <a class="top-link" href="${GITHUB}" target="_blank" rel="noopener">GitHub</a>
+    </div></header>
+    ${about}
+    <nav class="band" aria-label="Sections"><div class="wrap tabs">${tabs}</div></nav>
+    <main class="wrap page">${panelHtml}</main>
+    <footer><div class="wrap"><span><b>${esc(ABOUT.name)}</b> · ${esc(ABOUT.program)}</span><span>${disclaimer}</span></div></footer>`;
 }
 
 function sectionPage(tabId) {
   const t = TABS.find(x => x.id === tabId);
-  const all = sections();
-  shell(tabId, `<div><h2>${esc(t.label)}</h2><p class="tag">${esc(t.sub)}</p></div>${all[tabId]}`);
+  shell(tabId, `<div class="sec-head"><h2>${esc(t.label)}</h2><p>${esc(t.sub)}</p></div>${sections()[tabId]}`, { about: true });
 }
 
+function card(p, actions) {
+  return `<article class="card">${previewHtml(p)}
+    <div class="card-body"><span class="eyebrow">${esc(p.kind)}</span><h3>${esc(p.name)}</h3><p>${esc(p.desc)}</p><div class="actions">${actions}</div></div>
+  </article>`;
+}
+function sections() {
+  return {
+    organization: `<div class="grid">${PROJECTS.organization.map(p => card(p, actionLinks(p.actions))).join("")}</div>`,
+    automations: `<div class="grid">${PROJECTS.automations.map(p => card(p, `<a class="btn" href="#${p.id}">${esc(p.cta || "View walkthrough")}</a>`)).join("")}</div>`,
+    webapps: EMPTY_WEB
+  };
+}
 function previewHtml(p) {
   if (p.previewSvg) return `<div class="preview vps">${VPS_SVG}</div>`;
   if (p.preview) return `<img class="preview" src="${esc(p.preview)}" alt="Preview of ${esc(p.name)}" loading="lazy">`;
   return "";
 }
 
-function sections() {
-  const org = PROJECTS.organization.map(p => `
-    <div class="item">
-      ${previewHtml(p)}
-      <span class="tag">${esc(p.kind)}</span>
-      <h3>${esc(p.name)}</h3>
-      <p>${esc(p.desc)}</p>
-      <div class="actions">${actionLinks(p.actions)}</div>
-    </div>`).join("");
-
-  const auto = PROJECTS.automations.map(p => `
-    <div class="item">
-      ${previewHtml(p)}
-      <span class="tag">${esc(p.kind)}</span>
-      <h3>${esc(p.name)}</h3>
-      <p>${esc(p.desc)}</p>
-      <div class="actions">
-        <a class="btn" href="#${p.id}">${esc(p.cta || "View walkthrough")}</a>
-        ${p.json ? `<a class="btn" href="${esc(p.json)}">Download JSON</a>` : ""}
-      </div>
-    </div>`).join("");
-
-  const web = PROJECTS.webapps.length ? "" : `<p class="note">Empty state: no web apps yet.</p>`;
-
-  return {
-    organization: `<div class="items">${org}</div>`,
-    automations: `<div class="items">${auto}</div>`,
-    webapps: web
-  };
-}
 
 function automationPage(p) {
   const pins = (p.hotspots || []).map((h, i) => {
@@ -335,10 +397,10 @@ function automationPage(p) {
       </div>
     </section>` : "";
 
-  shell("automations", `
-    <a class="btn" href="#automations" style="justify-self:start">← All workflows</a>
-    <div>
-      <span class="tag">${esc(p.kind)}</span>
+  shell("automations", `<div class="detail">
+    <a class="btn back" href="#automations" style="justify-self:start">← All workflows</a>
+    <div class="detail-head">
+      <span class="eyebrow">${esc(p.kind)}</span>
       <h1>${esc(p.name)}</h1>
       <p>${esc(p.desc)}</p>
     </div>
@@ -364,7 +426,7 @@ function automationPage(p) {
     ${p.hideSteps ? "" : `<section>
       <h2>Step by step</h2>
       <ol>${list}</ol>
-    </section>`}`);
+    </section>`}</div>`);
 
   // Tap-to-toggle for touch
   app.querySelectorAll(".pin").forEach(btn => btn.addEventListener("click", () => {
@@ -391,6 +453,7 @@ function route() {
 }
 window.addEventListener("hashchange", route);
 route();
+
 </script>
 </body>
 </html>
