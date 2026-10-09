@@ -5,7 +5,7 @@ This portfolio shows that work in three areas:
 
 Organization: spreadsheets and Notion systems that organize data so it's easy to act on, including project dashboards, academic trackers and analysis models. Each one can be downloaded or duplicated.
 
-Automations: n8n workflows and Python pipelines, such as multi-stage outreach engines, MCP-based assistants that let LLMs use tools on their own, and custom scrapers. Each one has a walkthrough of how it works and a workflow file you can import.
+Workflows: n8n workflows and Python pipelines, such as multi-stage outreach engines, MCP-based assistants that let LLMs use tools on their own, and custom scrapers. Each one has a walkthrough of how it works and a workflow file you can import.
 
 Web Apps: coming soon.
 
