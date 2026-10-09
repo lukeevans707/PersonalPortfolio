@@ -27,10 +27,31 @@
   .btn:focus-visible, .pin:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
 
   /* Automation image + hotspots */
-  .diagram-scroll { overflow-x: auto; }
+  @media (max-width: 800px) { .diagram-scroll { overflow-x: auto; } }
+  .intro { display: grid; gap: 8px; max-width: 70ch; }
+  .intro p { margin: 0; }
+  .intro .tag + p:not(.tag) { margin-top: 8px; }
+  .preview { display: block; width: 100%; max-width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: left top; border: 1px solid var(--line); background: var(--box); }
+  div.preview { display: flex; align-items: center; overflow: hidden; color: var(--fg); padding: 6px; box-sizing: border-box; }
+  div.preview svg { width: 100%; height: auto; display: block; }
+  figure.vps { margin: 0; display: grid; gap: 8px; color: var(--fg); }
+  figure.vps svg { display: block; width: 100%; min-width: 720px; height: auto; }
+  .vps .box { fill: var(--bg); stroke: var(--line); stroke-width: 1.5; }
+  .vps .edge { fill: none; stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 6 5; }
+  .vps .ln { fill: none; stroke: currentColor; stroke-width: 1.5; }
+  .vps .dash { stroke-dasharray: 5 4; }
+  .vps .t { fill: var(--fg); font-size: 14px; font-weight: 600; }
+  .vps .s { fill: var(--muted); font-size: 12px; }
+  figure.vps figcaption { font-size: 13px; color: var(--muted); }
+  .pin:hover { z-index: 5; }
+  .tip.tip-wide { width: 300px; }
+  .diagram .tip { font-weight: 400; }
+  .diagram .tip strong { font-weight: 700; }
+  .tip-img { display: block; width: 100%; height: auto; margin-top: 8px; border: 1px solid var(--line); }
   .tip.tip-up { top: auto; bottom: 30px; }
   .diagram { position: relative; min-width: 760px; border: 1px solid var(--line); }
   .diagram .pin { background: #ffffff; color: #111111; box-shadow: 0 0 0 2px #111111; font-weight: 700; }
+  .pin.hover-only { cursor: default; display: flex; align-items: center; justify-content: center; }
   .diagram img { display: block; width: 100%; max-width: none; height: auto; }
   .tip.tip-right { left: auto; right: -8px; transform: none; }
   .tip.tip-left { left: -8px; transform: none; }
@@ -58,21 +79,25 @@
 /* ---------- CONTENT (edit here) ---------- */
 const PROJECTS = {
   organization: [
-    { id: "furniture", name: "Inventory Manager", kind: "Excel (macro-enabled)", desc: "Placeholder description.",
+    { id: "furniture", preview: "img/preview-inventory.jpg", name: "Inventory Manager", kind: "Excel (macro-enabled)", desc: "During my freshman year, I flipped furniture to pay for rent and tuition. I built this workbook to run the business: VBA macros automate data entry, and advanced formulas turn every sale into performance metrics and analysis.",
       actions: [{ label: "Download .xlsm", href: "https://github.com/lukeevans707/PersonalPortfolio/releases/download/v1.0/Inventory.Manager.xlsm" }] },
-    { id: "overload", name: "Progressive Overload", kind: "Notion template", desc: "Placeholder description.",
+    { id: "overload", preview: "img/preview-overload.jpg", name: "Progressive Overload", kind: "Notion template", desc: "I'm a weightlifter and competitive bodybuilder, and progressive overload is the core of how I train. This Notion template tracks every lift so I can see my progress and plan each next increase.",
       actions: [{ label: "Duplicate template", href: "https://zigzag-savory-0eb.notion.site/Progressive-Overload-Template-38611ac94c6c82fb9db601a3ae674498?source=copy_link" }] },
-    { id: "nutrition", name: "Nutrition Map", kind: "Sheet (view only)", desc: "Placeholder description. Basic example copy.",
+    { id: "prep", preview: "img/preview-prep.jpg", name: "Bodybuilding Prep Tracker", kind: "Excel", desc: "I built this workbook to prepare for a bodybuilding competition. A daily log of weight, body-fat percentage and water composition feeds a dashboard that calculates lean body mass, BMR, maintenance calories, and the daily calorie and macro targets needed to hit my goal weight by competition day, with a chart of the weight trend.",
+      actions: [{ label: "Download .xlsx", href: "https://github.com/lukeevans707/PersonalPortfolio/releases/download/v1.1/Aug.23.Prep.Data.xlsx" }] },
+    { id: "nutrition", preview: "img/preview-nutrition.jpg", name: "Nutrition Map", kind: "Sheet (view only)", desc: "I scraped nutrient data from the USDA's FoodData Central search and structured it into an easy-to-read nutrition map. From it, I built themed meal plans as a constrained optimization problem: meet every daily nutrient requirement, at the lowest calories and lowest cost, using only foods I enjoy.",
       actions: [{ label: "View sheet", href: "https://docs.google.com/spreadsheets/d/1KZ1J6JTBFvV-rMyHjjwVFBfpRb4maiCR27vtsG-JpKI/edit?gid=1995576994#gid=1995576994" }] },
-    { id: "byu", name: "College Dashboard", kind: "Notion template", desc: "Placeholder description.",
+    { id: "byu", preview: "img/preview-college.jpg", name: "College Dashboard", kind: "Notion template", desc: "A single Notion dashboard that combines Canvas and Learning Suite into one view. It's built on two productivity principles: \"Prioritize and Execute\" from Jocko Willink's Extreme Ownership, and Scrum-style sprints for planning each day's work. AI-supported workflows scrape new assignments into it automatically. It's also connected to Claude, so I can query all my notes and assignments, generate practice quizzes, create notes and tasks, and transcribe handwritten notes straight into Notion.",
       actions: [{ label: "Duplicate template", href: "https://zigzag-savory-0eb.notion.site/College-Dashboard-b5e11ac94c6c836dbbc201a0300f73b0?source=copy_link" }] },
-    { id: "telamon-pm", name: "Project Manager", kind: "Notion template", desc: "Placeholder description.",
+    { id: "telamon-pm", preview: "img/preview-projects.jpg", name: "Project Manager", kind: "Notion template", desc: "I'm entrepreneurially minded and usually have a side project going. This dashboard turns ambiguous goals into structured projects with timelines, subtasks, and hours tracking, so I can see where my time goes and what's next.",
       actions: [{ label: "Duplicate template", href: "https://zigzag-savory-0eb.notion.site/Project-Dashboard-Template-c4311ac94c6c8240bd5f01501ba6522f?source=copy_link" }] }
   ],
   automations: [
-    { id: "assignments", name: "Assignment Engine", kind: "n8n · AI agent · Playwright",
-      desc: "Rodney, an AI agent that pulls every assignment from Canvas and Learning Suite into one prioritized Notion dashboard. Saves about an hour a week.",
+    { id: "assignments", preview: "img/preview-assignments.jpg", name: "BYU Assignment Aggregator", kind: "n8n · AI-supported workflow · Playwright",
+      desc: "An AI-supported workflow that pulls every assignment from Canvas and Learning Suite into one prioritized Notion dashboard.",
       image: "img/assignment-engine.jpg",
+      hoverOnly: true,
+      hideSteps: true,
       intro: [
         "BYU houses its classes in two programs: Learning Suite and Canvas. That's inconvenient for a few reasons:"
       ],
@@ -82,24 +107,24 @@ const PROJECTS = {
         "Hard to see which assignments to prioritize"
       ],
       outro: [
-        "My solution was an AI agent, Rodney, that scrapes all my assignments from both systems into a single Notion dashboard. It runs from a button on the dashboard, gets through multi-factor authentication with Playwright browser scripts, searches each class for its assignments and syllabus, and writes the results back to the same dashboard.",
-        "Now every assignment lives in one place, prioritized by Rodney. It saves me about an hour a week."
+        "My solution was an AI-supported workflow that scrapes all my assignments from both systems into a single Notion dashboard. It runs from a button on the dashboard, gets through multi-factor authentication with Playwright browser scripts, scrapes each class for its assignments, and writes the results back to the same dashboard.",
+        "Now every assignment lives in one place, already prioritized."
       ],
       hotspots: [
-        { x: 10.3, y: 30, title: "Start from Notion", text: "Launched from a button on my Notion dashboard, which submits the form that starts the workflow." },
-        { x: 16.6, y: 30, title: "Route the job", text: "Sends assignment scraping down the top path and lecture notes down the bottom path." },
-        { x: 26.6, y: 12, title: "Scraped course data", text: "Playwright scripts log into Canvas and Learning Suite, pass multi-factor auth, and hand the scraped text to n8n." },
-        { x: 36.1, y: 12, title: "Course Scraper agent", text: "Reads the scraped text and pulls out each course in a structured format." },
-        { x: 47.2, y: 12, title: "Syllabus extractor agent", text: "Matches each course to its class in my Notion database and finds the syllabus." },
-        { x: 55.1, y: 12, title: "Download syllabus", text: "Fetches the syllabus file and extracts its text from the PDF." },
-        { x: 75.7, y: 12, title: "Assignment Organizer agent", text: "Combines assignments and syllabus details, then sorts and prioritizes them." },
-        { x: 89.4, y: 12, title: "Write to dashboard", text: "Each assignment becomes its own page in the Notion assignments database." },
-        { x: 36.1, y: 50, title: "Lecture Note Summarizer", text: "Second path: summarizes an uploaded lecture PDF." },
-        { x: 64.6, y: 50, title: "Save notes to Notion", text: "Creates a notes page under the matching class and appends the summary." }
+        { x: 8.5, y: 46, up: false, title: "Start from Notion", text: "Launched from a button on my Notion dashboard, which submits the form that starts the workflow." },
+        { x: 21.7, y: 46, up: false, wide: true, title: "Log in with Playwright", text: "Calls my self-hosted Playwright runner, which logs in, passes multi-factor auth, and saves the browser session so the scrapers can reuse it. The runner sits beside n8n in the same Docker setup:",
+          image: "img/playwright-compose.jpg", imageAlt: "docker-compose.yml running n8n and a Playwright runner side by side" },
+        { x: 47.9, y: 8, title: "Canvas Scraper", text: "Playwright opens Canvas with the saved session and scrapes the assignment pages." },
+        { x: 57.8, y: 8, title: "Canvas Reader", text: "Reads the scraped page and pulls out each assignment in a structured format." },
+        { x: 37.9, y: 46, up: false, title: "Learning Suite Scraper", text: "Playwright pulls course content from Learning Suite and returns it as a PDF." },
+        { x: 68.1, y: 46, up: false, title: "Learning Suite Reader", text: "Pulls each assignment out of the extracted text in the same structured format." },
+        { x: 89.6, y: 34, title: "Write to dashboard", text: "Each assignment becomes its own page in the Notion assignments database." }
       ] },
-    { id: "marketplace", name: "Marketplace Scraper", kind: "n8n · AI agents · Apify",
+    { id: "marketplace", preview: "img/preview-marketplace.jpg", name: "FB Marketplace Analyzer", kind: "n8n · AI agents · Apify",
       desc: "An email-driven AI agent that searches Facebook Marketplace and replies with a pricing report, so you know if you're getting a good deal.",
       image: "img/marketplace-scraper.jpg",
+      hoverOnly: true,
+      hideSteps: true,
       intro: [
         "A friend asked me for a Facebook Marketplace scraper so he could tell whether he was getting a good deal on a purchase. Here's how I set up the agent:"
       ],
@@ -108,23 +133,106 @@ const PROJECTS = {
         "The workflow sends that query to an Apify web-scraping actor through its API and stores the results in a Google Sheet.",
         "A separate agent has access to that sheet and writes a basic pricing report on the item, which is emailed back to the user."
       ],
-      tryIt: {
-        text: "I'm still working out the kinks, so feel free to try it. I can see each run on my end and use it to reduce errors. Email an item you'd like to search to:",
-        email: "jerrythemarketplacescraper@gmail.com"
-      },
       hotspots: [
         { x: 7.7, y: 26, title: "Email arrives", text: "The workflow starts when someone emails the bot's inbox with an item to search." },
         { x: 19.3, y: 26, title: "Email Interpreter agent", text: "Turns the email into a structured search query. Memory lets it keep context across messages." },
-        { x: 41.6, y: 61, title: "Shared language model", text: "One OpenAI model powers both agents." },
         { x: 39.2, y: 26, title: "Apify scraper", text: "Sends the query to an Apify actor through its API, which scrapes matching Marketplace listings." },
-        { x: 48.1, y: 26, title: "Store listings", text: "Each listing is added as a row in a Google Sheet." },
+        { x: 48.1, y: 26, title: "Store listings", text: "Each listing is added as a row in a Google Sheet. Every new search expands this database, so the pricing analysis gets more robust over time." },
         { x: 72.7, y: 26, title: "Analytics Agent", text: "A second agent reviews the listings and writes a pricing report." },
-        { x: 73.7, y: 51, title: "Listings tool", text: "Gives the Analytics Agent read access to the sheet of listings." },
         { x: 92.5, y: 26, title: "Reply with report", text: "The pricing report is emailed back to the person who asked." }
+      ] },
+    { id: "server", previewSvg: true, name: "Self-Hosted Automation Server", kind: "Docker · VPS infrastructure",
+      desc: "The server behind my workflows: n8n, a custom Playwright runner and an auto-updater, running as Docker containers on one VPS.",
+      cta: "View diagram",
+      diagramSvg: true,
+      hideSteps: true,
+      intro: [
+        "My workflows run on my own server: a Hostinger VPS with three Docker containers, all defined in one docker-compose file:"
+      ],
+      problems: [
+        "n8n: the workflow engine. The editor and webhooks are reached over HTTPS, and a data volume keeps workflows and credentials across restarts.",
+        "Playwright runner: a custom Node service that n8n calls over the internal Docker network to drive a real browser, log in, and scrape pages.",
+        "Watchtower: checks for new images once a week, updates the containers labeled for it, and cleans up old images."
+      ],
+      outro: [
+        "Keeping browser automation in its own container keeps n8n lightweight, and logins saved in the runner's profiles folder can be reused across runs."
       ] }
   ],
   webapps: []
 };
+
+/* ---------- SERVER DIAGRAM ---------- */
+const VPS_SVG = `<svg viewBox="0 0 910 500" role="img" aria-label="A Hostinger VPS runs three Docker containers. The internet reaches n8n over HTTPS. n8n calls cloud APIs and sends HTTP requests to the Playwright runner, which drives a headless browser against Canvas and Learning Suite. Watchtower checks weekly for image updates.">
+    <defs>
+      <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+      </marker>
+    </defs>
+
+    <!-- Internet -->
+    <rect class="box" x="10" y="85" width="150" height="70"/>
+    <text class="t" x="85" y="115" text-anchor="middle">Internet</text>
+    <text class="s" x="85" y="135" text-anchor="middle">editor &amp; webhooks</text>
+    <line class="ln" x1="160" y1="120" x2="238" y2="120" marker-end="url(#arr)"/>
+    <text class="s" x="178" y="111" text-anchor="middle">HTTPS</text>
+
+    <!-- VPS boundary -->
+    <rect class="edge" x="200" y="20" width="470" height="460"/>
+    <text class="t" x="215" y="44">Hostinger VPS</text>
+    <text class="s" x="215" y="62">Docker Compose · /opt/n8n</text>
+
+    <!-- n8n -->
+    <rect class="box" x="240" y="80" width="220" height="110"/>
+    <text class="t" x="255" y="105">n8n</text>
+    <text class="s" x="255" y="125">n8nio/n8n:latest</text>
+    <text class="s" x="255" y="143">port 5678</text>
+    <text class="s" x="255" y="161">volume: n8n_data</text>
+    <text class="s" x="255" y="177">workflows &amp; credentials</text>
+
+    <!-- n8n -> playwright -->
+    <line class="ln" x1="350" y1="190" x2="350" y2="318" marker-end="url(#arr)"/>
+    <text class="s" x="360" y="250">HTTP POST</text>
+    <text class="s" x="360" y="266">playwright:3000</text>
+
+    <!-- Playwright runner -->
+    <rect class="box" x="240" y="320" width="220" height="120"/>
+    <text class="t" x="255" y="345">playwright-runner</text>
+    <text class="s" x="255" y="365">custom build, Node</text>
+    <text class="s" x="255" y="383">port 3000 · npm start</text>
+    <text class="s" x="255" y="401">volume: profiles</text>
+    <text class="s" x="255" y="419">saved browser sessions</text>
+
+    <!-- Watchtower -->
+    <rect class="box" x="510" y="230" width="140" height="80"/>
+    <text class="t" x="525" y="255">watchtower</text>
+    <text class="s" x="525" y="275">watchtower:1.7.1</text>
+    <text class="s" x="525" y="293">--cleanup</text>
+    <polyline class="ln dash" points="580,230 580,170 462,170" marker-end="url(#arr)"/>
+    <text class="s" x="572" y="196" text-anchor="end">weekly</text>
+    <text class="s" x="572" y="212" text-anchor="end">update check</text>
+
+    <!-- n8n -> cloud APIs -->
+    <line class="ln" x1="460" y1="120" x2="698" y2="120" marker-end="url(#arr)"/>
+    <text class="s" x="580" y="111" text-anchor="middle">API calls</text>
+    <rect class="box" x="700" y="80" width="200" height="110"/>
+    <text class="t" x="715" y="105">Cloud APIs</text>
+    <text class="s" x="715" y="127">OpenAI · Notion</text>
+    <text class="s" x="715" y="145">Gmail · Google Sheets</text>
+    <text class="s" x="715" y="163">Apify</text>
+
+    <!-- playwright -> school portals -->
+    <line class="ln" x1="460" y1="380" x2="698" y2="380" marker-end="url(#arr)"/>
+    <text class="s" x="580" y="371" text-anchor="middle">headless browser</text>
+    <rect class="box" x="700" y="335" width="200" height="90"/>
+    <text class="t" x="715" y="360">School portals</text>
+    <text class="s" x="715" y="382">Canvas</text>
+    <text class="s" x="715" y="400">Learning Suite</text>
+  </svg>`;
+const VPS_FIGURE = `
+<figure class="vps">
+  ${VPS_SVG}
+  <figcaption>Everything inside the dashed line runs on one VPS. Users and webhooks reach n8n over HTTPS, and n8n reaches the Playwright runner over Docker's internal network.</figcaption>
+</figure>`;
 
 /* ---------- RENDERING ---------- */
 const app = document.getElementById("app");
@@ -139,7 +247,7 @@ function actionLinks(actions) {
 
 const TABS = [
   { id: "organization", label: "Organization", sub: "Spreadsheets & Notion" },
-  { id: "automations", label: "Automations", sub: "n8n workflows" },
+  { id: "automations", label: "Workflows", sub: "n8n workflows" },
   { id: "webapps", label: "Web Apps", sub: "Coming soon" }
 ];
 
@@ -147,10 +255,11 @@ function shell(activeTab, panelHtml) {
   const tabs = TABS.map(t =>
     `<a class="tab" href="#${t.id}" ${t.id === activeTab ? 'aria-current="page"' : ""}>${esc(t.label)}</a>`).join("");
   app.innerHTML = `
-    <header>
-      <h1>Luke Evans — Portfolio</h1>
-      <p>Placeholder intro line.</p>
-    </header>
+    <header class="intro">
+      <h1>Luke Evans</h1>
+      <p class="tag">Business Analysis</p>
+      <p class="tag">Information Systems, BYU · Graduating May 2028</p>
+      <p>I build systems that remove repetitive bottlenecks. I'm studying Information Systems in BYU's STEM-designated program, and I'm interested in where data, process and automation meet: finding the manual steps that slow a team down and replacing them with workflows that run on their own.</p>    </header>
     <div class="folder">
       <nav class="tabs" aria-label="Sections">${tabs}</nav>
       <div class="panel">${panelHtml}</div>
@@ -163,9 +272,16 @@ function sectionPage(tabId) {
   shell(tabId, `<div><h2>${esc(t.label)}</h2><p class="tag">${esc(t.sub)}</p></div>${all[tabId]}`);
 }
 
+function previewHtml(p) {
+  if (p.previewSvg) return `<div class="preview vps">${VPS_SVG}</div>`;
+  if (p.preview) return `<img class="preview" src="${esc(p.preview)}" alt="Preview of ${esc(p.name)}" loading="lazy">`;
+  return "";
+}
+
 function sections() {
   const org = PROJECTS.organization.map(p => `
     <div class="item">
+      ${previewHtml(p)}
       <span class="tag">${esc(p.kind)}</span>
       <h3>${esc(p.name)}</h3>
       <p>${esc(p.desc)}</p>
@@ -174,11 +290,12 @@ function sections() {
 
   const auto = PROJECTS.automations.map(p => `
     <div class="item">
+      ${previewHtml(p)}
       <span class="tag">${esc(p.kind)}</span>
       <h3>${esc(p.name)}</h3>
       <p>${esc(p.desc)}</p>
       <div class="actions">
-        <a class="btn" href="#${p.id}">View walkthrough</a>
+        <a class="btn" href="#${p.id}">${esc(p.cta || "View walkthrough")}</a>
         ${p.json ? `<a class="btn" href="${esc(p.json)}">Download JSON</a>` : ""}
       </div>
     </div>`).join("");
@@ -193,16 +310,17 @@ function sections() {
 }
 
 function automationPage(p) {
-  const pins = p.hotspots.map((h, i) => {
-    const side = (h.x > 75 ? "tip-right" : h.x < 20 ? "tip-left" : "") + (h.y > 45 ? " tip-up" : "");
-    return `
-    <button class="pin" style="left:${h.x}%; top:${h.y}%" aria-label="${i + 1}. ${esc(h.title)}">
-      ${i + 1}
-      <span class="tip ${side}" role="tooltip"><strong>${esc(h.title)}</strong><br>${esc(h.text)}</span>
-    </button>`;
+  const pins = (p.hotspots || []).map((h, i) => {
+    const up = h.up !== undefined ? h.up : h.y > 45;
+    const side = (h.x > 75 ? "tip-right" : h.x < 20 ? "tip-left" : "") + (up ? " tip-up" : "") + (h.wide ? " tip-wide" : "");
+    const img = h.image ? `<img class="tip-img" src="${esc(h.image)}" alt="${esc(h.imageAlt || "")}">` : "";
+    const tip = `<span class="tip ${side}" role="tooltip"><strong>${esc(h.title)}</strong><br>${esc(h.text)}${img}</span>`;
+    return p.hoverOnly
+      ? `<span class="pin hover-only" style="left:${h.x}%; top:${h.y}%">${i + 1}${tip}</span>`
+      : `<button class="pin" style="left:${h.x}%; top:${h.y}%" aria-label="${i + 1}. ${esc(h.title)}">${i + 1}${tip}</button>`;
   }).join("");
 
-  const list = p.hotspots.map(h => `<li><strong>${esc(h.title)}</strong>: ${esc(h.text)}</li>`).join("");
+  const list = (p.hotspots || []).map(h => `<li><strong>${esc(h.title)}</strong>: ${esc(h.text)}</li>`).join("");
   const paras = arr => (arr || []).map(t => `<p>${esc(t)}</p>`).join("");
   const bullets = arr => arr ? `<ul>${arr.map(t => `<li>${esc(t)}</li>`).join("")}</ul>` : "";
   const numbered = arr => arr ? `<ol>${arr.map(t => `<li>${esc(t)}</li>`).join("")}</ol>` : "";
@@ -218,7 +336,7 @@ function automationPage(p) {
     </section>` : "";
 
   shell("automations", `
-    <a class="btn" href="#automations" style="justify-self:start">← All automations</a>
+    <a class="btn" href="#automations" style="justify-self:start">← All workflows</a>
     <div>
       <span class="tag">${esc(p.kind)}</span>
       <h1>${esc(p.name)}</h1>
@@ -234,18 +352,19 @@ function automationPage(p) {
     ${tryIt}
     <section>
       <h2>How it works</h2>
+      ${p.diagramSvg ? `<div class="diagram-scroll">${VPS_FIGURE}</div>` : `
       <div class="diagram-scroll">
         <div class="diagram">
           <img src="${esc(p.image)}" alt="n8n workflow canvas for ${esc(p.name)}">
           ${pins}
         </div>
       </div>
-      <p class="tag">Hover or tap a number</p>
+      <p class="tag">${p.hoverOnly ? "Hover over a number" : "Hover or tap a number"}</p>`}
     </section>
-    <section>
+    ${p.hideSteps ? "" : `<section>
       <h2>Step by step</h2>
       <ol>${list}</ol>
-    </section>`);
+    </section>`}`);
 
   // Tap-to-toggle for touch
   app.querySelectorAll(".pin").forEach(btn => btn.addEventListener("click", () => {
