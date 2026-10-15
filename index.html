@@ -218,7 +218,11 @@ const PROJECTS = {
         "Keeping browser automation in its own container keeps n8n lightweight, and logins saved in the runner's profiles folder can be reused across runs."
       ] }
   ],
-  webapps: []
+  webapps: [
+    { id: "battlebus", preview: "img/preview-battlebus.jpg", name: "IS Career Launchpad", kind: "Website · GitHub Pages",
+      desc: "A career explorer for BYU Information Systems students. It covers four paths (data analyst, security analyst, IT project manager and software developer): what the job looks like day to day, what it pays, and what an intern is expected to know, with a hands-on activity and a mock interview for each.",
+      actions: [{ label: "Visit site", href: "https://zinkozapper.github.io/Project-Battlebus/" }] }
+  ]
 };
 
 /* ---------- SERVER DIAGRAM ---------- */
@@ -308,7 +312,7 @@ function actionLinks(actions) {
 const TABS = [
   { id: "organization", label: "Organization", sub: "Spreadsheets & Notion" },
   { id: "automations", label: "Workflows", sub: "n8n workflows" },
-  { id: "webapps", label: "Web Apps", sub: "Coming soon" }
+  { id: "webapps", label: "Websites", sub: "Live websites" }
 ];
 
 /* ---------- ABOUT (shared by all drafts) ---------- */
@@ -321,7 +325,7 @@ const ABOUT = {
   body: "I'm studying Information Systems in BYU's STEM-designated program, and I'm interested in where data, process and automation meet: finding the manual steps that slow a team down and replacing them with workflows that run on their own."
 };
 const GITHUB = "https://github.com/lukeevans707";
-const EMPTY_WEB = `<div class="empty"><h3>No web apps published yet</h3><p>Web applications I build will be added here as they ship.</p></div>`;
+const EMPTY_WEB = `<div class="empty"><h3>No websites published yet</h3><p>Websites I build will be added here as they ship.</p></div>`;
 const disclaimer = "Personal portfolio. Not an official Brigham Young University site.";
 
 function shell(activeTab, panelHtml, opts = {}) {
@@ -361,7 +365,7 @@ function sections() {
   return {
     organization: `<div class="grid">${PROJECTS.organization.map(p => card(p, actionLinks(p.actions))).join("")}</div>`,
     automations: `<div class="grid">${PROJECTS.automations.map(p => card(p, `<a class="btn" href="#${p.id}">${esc(p.cta || "View walkthrough")}</a>`)).join("")}</div>`,
-    webapps: EMPTY_WEB
+    webapps: PROJECTS.webapps.length ? `<div class="grid">${PROJECTS.webapps.map(p => card(p, actionLinks(p.actions))).join("")}</div>` : EMPTY_WEB
   };
 }
 function previewHtml(p) {
