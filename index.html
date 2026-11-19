@@ -224,7 +224,10 @@ const PROJECTS = {
       actions: [{ label: "Visit site", href: "https://zinkozapper.github.io/Project-Battlebus/" }] },
     { id: "shade", preview: "img/preview-shade.jpg", name: "Shade", kind: "Game · itch.io",
       desc: "Horror games were one of the first things my friends and I bonded over in high school, so we built one of our own. Shade is a passion-project prototype that brings our core concept to life. It's still a work in progress, but it showcases the game's fundamental mechanics.",
-      actions: [{ label: "Play on itch.io", href: "https://shadedeployment.itch.io/shade" }] }
+      actions: [{ label: "Play on itch.io", href: "https://shadedeployment.itch.io/shade" }] },
+    { id: "kiwi", preview: "img/preview-kiwi.jpg", name: "Kiwi Nutrition", kind: "Web app · AWS · Claude API",
+      desc: "A grocery planner my team built for young adults eating on a budget. Kiwi sets daily targets for 27 nutrients, shows the gaps in what you already eat, and ranks foods by how much of each gap they fill per dollar. When a food isn't in the catalog, an AI workflow takes over: it searches USDA FoodData Central for nutrient data, has Claude pick and catalog the best match, and prices it at the user's nearest Kroger-family store through the Kroger API. The app runs on AWS Elastic Beanstalk behind CloudFront, and GitHub Actions deploys every push to main automatically.",
+      actions: [{ label: "Visit site", href: "https://dfoo37gyp3r01.cloudfront.net/" }] }
   ]
 };
 
